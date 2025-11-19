@@ -1,1 +1,211 @@
 
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Sample data (X and Y)
+X = np.array([1, 2, 3, 4])
+Y = np.array([2, 3, 5, 7])
+
+# Initialize parameters
+b0 = 0  # Intercept
+b1 = 0  # Slope
+learning_rate = 0.01  # Step size
+iterations = 1000  # Number of iterations
+
+# Number of samples
+n = len(X)
+
+# Gradient Descent function
+def gradient_descent(X, Y, b0, b1, learning_rate, iterations):
+    for i in range(iterations):
+        # Predicted Y values (b0 + b1*X) using Linear Regression
+        Y_pred = b0 + b1 * X
+
+        # Compute gradients
+        db0 = (1/n) * sum(Y_pred - Y)  # Partial derivative wrt b0
+        db1 = (1/n) * sum((Y_pred - Y) * X)  # Partial derivative wrt b1
+
+        # Update b0 and b1
+        b0 -= learning_rate * db0
+        b1 -= learning_rate * db1
+
+        # Print values after every 100 iterations for insight
+        if i % 100 == 0:
+            cost = (1/(2*n)) * sum((Y_pred - Y)**2)
+            print(f"Iteration {i}: b0 = {b0:.4f}, b1 = {b1:.4f}, Cost = {cost:.4f}")
+
+    return b0, b1
+
+
+# Run Gradient Descent
+b0, b1 = gradient_descent(X, Y, b0, b1, learning_rate, iterations)
+
+print(f"\nFinal coefficients: b0 = {b0:.4f}, b1 = {b1:.4f}")
+
+# Plotting the result
+plt.scatter(X, Y, color="blue", label="Data points")
+plt.plot(X, b0 + b1 * X, color="red", label="Fitted line")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.legend()
+plt.title("Linear Regression using Gradient Descent")
+plt.show()
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# For data loading and splitting
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+
+# For model training and evaluation
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# For scaling features
+from sklearn.preprocessing import StandardScaler
+
+# Load the California Housing dataset
+california = fetch_california_housing()
+
+# Create a DataFrame
+data = pd.DataFrame(california.data, columns=california.feature_names)
+data['MedHouseVal'] = california.target
+
+# Display the first five rows
+print(data.head(10))
+data.count()
+
+# Check for missing values
+print(data.isnull().sum())
+
+
+# Statistical summary
+print(data.describe())
+
+
+#Visualizing Feature Relationships
+# Pairplot for selected features
+sns.pairplot(data[['MedInc', 'HouseAge', 'AveRooms', 'Population', 'MedHouseVal']])
+plt.show()
+
+# Correlation matrix
+plt.figure(figsize=(10,8))
+sns.heatmap(data.corr(), annot=True, cmap='coolwarm')
+plt.title('Correlation Matrix')
+plt.show()
+
+#Step 4: Splitting the Dataset
+# Features and target variable
+X = data.drop('MedHouseVal', axis=1)
+y = data['MedHouseVal']
+
+# Splitting the dataset (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+print(f"Training set size: {X_train.shape}")
+print(f"Testing set size: {X_test.shape}")
+
+#Step 5: Training the Linear Regression Model
+# Initialize the Linear Regression model
+lr_model = LinearRegression()
+
+# Train the model
+lr_model.fit(X_train, y_train)
+
+# Coefficients
+print("Intercept (b0):", round(lr_model.intercept_,3))
+print("Coefficients (b1, b2, ..., b8):",np.round(lr_model.coef_,4))
+
+# Predictions on the test set
+y_pred = lr_model.predict(X_test)
+
+# Calculate evaluation metrics
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+mae = mean_absolute_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("=== scikit-learn Linear Regression Evaluation ===")
+print(f"Mean Squared Error (MSE): {mse:.4f}")
+print(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
+print(f"Mean Absolute Error (MAE): {mae:.4f}")
+print(f"R-squared (R²): {r2:.4f}")
+
+# Dummy data for prediction (same feature structure as X)
+dummy_data = pd.DataFrame({
+    'MedInc': [5.0, 8.0, 3.0],
+    'HouseAge': [30, 10, 40],
+    'AveRooms': [6.0, 5.0, 4.0],
+    'AveBedrms': [1.0, 1.5, 1.0],
+    'Population': [1000, 500, 2000],
+    'AveOccup': [3.0, 2.5, 4.0],
+    'Latitude': [34.0, 36.0, 38.0],
+    'Longitude': [-120.0, -121.0, -122.0]
+})
+
+# Predictions
+dummy_predictions = lr_model.predict(dummy_data)
+
+print("=== Predictions on Dummy Data using scikit-learn Linear Regression ===")
+for i, pred in enumerate(dummy_predictions, 1):
+    print(f"Dummy Data {i}: Predicted MedHouseVal = {pred:.4f}")
+
+# Compute the correlation matrix
+corr_matrix = data.corr()
+
+# Display the correlation matrix
+plt.figure(figsize=(10,8))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+plt.title('Correlation Matrix')
+plt.show()
+
+#We'll select features whose absolute correlation with MedHouseVal is greater than or equal to 0.5.
+# Get absolute correlations with the target variable
+corr_target = abs(corr_matrix['MedHouseVal'])
+
+# Select features with correlation >= 0.05
+high_corr_features = corr_target[corr_target >= 0.15].index.tolist()
+
+# Remove the target variable from the list
+high_corr_features.remove('MedHouseVal')
+
+print("Features with high correlation (|correlation| >= 0.5) with MedHouseVal:")
+print(high_corr_features)
+
+# Define the feature matrix X and target vector y using high correlation features
+X = data[high_corr_features]
+y = data['MedHouseVal']
+
+# Split the dataset into training and testing sets (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+print(f"Training set size: {X_train.shape}")
+print(f"Testing set size: {X_test.shape}")
+
+# Initialize the Linear Regression model
+lr_model = LinearRegression()
+
+# Train the model on the scaled training data
+lr_model.fit(X_train, y_train)
+
+# Display the model's intercept and coefficients
+print(f"Intercept (b0): {lr_model.intercept_}")
+print(f"Coefficients (b1, b2, b3): {lr_model.coef_}")
+
+# Predict on the test set
+y_pred = lr_model.predict(X_test)
+
+# Calculate evaluation metrics
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+mae = mean_absolute_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("\n=== Linear Regression Model Evaluation ===")
+print(f"Mean Squared Error (MSE): {mse:.4f}")
+print(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
+print(f"Mean Absolute Error (MAE): {mae:.4f}")
+print(f"R-squared (R²): {r2:.4f}")
