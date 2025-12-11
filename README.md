@@ -19,7 +19,7 @@ Each week includes:
 | Week | Topic | Link |
 |------|------------------------------|---------------------------|
 | Week 1 | Python Basics & EDA | ➤ [/week1](week1.ipynb) |
-| Week 2 | Pandas & Visualization | ➤ [/week2](../week2) |
+| Week 2 | Pandas & Visualization | ➤ [/week2](Week2.ipynb) |
 | Week 3 | Binary & Multiclass Classification | ➤ [/week3](../week3) |
 | Week 4 | Perceptron & ANN | ➤ [/week4](../week4) |
 | Week 5 | CNN + GradCAM | ➤ [/week5](../week5) |
