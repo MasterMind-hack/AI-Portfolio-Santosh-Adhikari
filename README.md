@@ -22,7 +22,7 @@ Each week includes:
 | Week 2 | Pandas & Visualization | ➤ [/week2](Week2.ipynb) |
 | Week 3 | Binary & Multiclass Classification | ➤Binary [/week3](Week3_Binary_Classification.ipynb) Multiclassification[/week3](Week3__Multiclassification.ipynb) Protfolio[/week3](Week3_Protfolio.ipynb)|
 | Week 4 | Perceptron & ANN | ➤ Percepton[/week4](week4_Preceptron.ipynb) Classification_Perception[/week4](Week__Classification_using_perceptron.ipynb) Binary_Classification_using_ANN. [/week4](Week4__Binary_Classification_using_ANN.ipynb)|
-| Week 5 | CNN + GradCAM | ➤Digital Classification [/week5](Week5_Digit_classification_using_CNN.ipynb) XAI_Using_GradCAM [/week5](week5_Week5_XAI_Using_GradCAM.ipynb)|
+| Week 5 | CNN + GradCAM | ➤Digital Classification [/week5](Week5_Digit_classification_using_CNN.ipynb) XAI_Using_GradCAM [/week5](Week5_XAI_Using_GradCAM.ipynb)|
 | Week 6 | Clustering (KMeans) | ➤ [/week6](../week6) |
 
 ---
